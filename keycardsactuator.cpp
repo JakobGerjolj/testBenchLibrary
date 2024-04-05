@@ -19,6 +19,7 @@ KeyCardsActuator::KeyCardsActuator(QSerialPort *serial)
 
 void KeyCardsActuator::approchLeftCard()
 {
+    m_serial->write("\n");
     m_serial->write(QByteArray{"1\r\n"});
     m_serial->flush();
 }

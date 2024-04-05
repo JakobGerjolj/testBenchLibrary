@@ -13,8 +13,8 @@ class KeyCardsActuator : public QObject
     Q_PROPERTY(int rightCardStatus READ rightCardStatus WRITE setRightCardStatus NOTIFY rightCardStatusChanged)
 
 public:
-    //explicit KeyCardsActuator(QSerialPort *serial, QObject *parent = nullptr);
-    explicit KeyCardsActuator(QSerialPort*);
+    explicit KeyCardsActuator(QSerialPort *serial, QObject *parent = nullptr);
+    // explicit KeyCardsActuator(QSerialPort*);
 
 
     Q_INVOKABLE void approchLeftCard();
@@ -34,6 +34,9 @@ signals:
     void leftCardStatusChanged(int leftCardStatus);
     void rightCardStatusChanged(int rightCardStatus);
     void allCardMoveFinished();
+    void leftCardFinishedMoving();
+    void rightCardFinishedMoving();
+    void ghost();
 
 private slots:
     void handleReadyRead();
@@ -41,6 +44,7 @@ private slots:
 private:
     int m_leftCardStatus{0};
     int m_rightCardStatus{0};
+    bool m_isLeftmoving{false};
 
     QSerialPort *m_serial{nullptr};
 };

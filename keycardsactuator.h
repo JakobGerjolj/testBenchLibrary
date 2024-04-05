@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QSerialPort>
 #include <QDebug>
+
+
 class KeyCardsActuator : public QObject
 {
     Q_OBJECT
@@ -17,7 +19,7 @@ public:
 
     Q_INVOKABLE void approchLeftCard();
     Q_INVOKABLE void approchRightCard();
-
+    void moveCorrectCard();
 
 
     int leftCardStatus() const;
@@ -26,10 +28,12 @@ public:
 public slots:
     void setLeftCardStatus(int leftCardStatus);
     void setRightCardStatus(int rightCardStatus);
+    void printRightCardStatusWhenChanged();
 
 signals:
     void leftCardStatusChanged(int leftCardStatus);
     void rightCardStatusChanged(int rightCardStatus);
+    void allCardMoveFinished();
 
 private slots:
     void handleReadyRead();

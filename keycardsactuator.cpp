@@ -11,10 +11,10 @@
 
 KeyCardsActuator::KeyCardsActuator(QSerialPort *serial)
 {
-    qDebug()<<"Key actuator constructed";
-    qDebug()<<serial->portName();
     m_serial=serial;
-    qDebug()<<m_serial->portName();
+    connect(m_serial,&QSerialPort::readyRead,this,&KeyCardsActuator::handleReadyRead);
+    connect(this, &KeyCardsActuator::rightCardStatusChanged, this, &KeyCardsActuator::printRightCardStatusWhenChanged);
+    //this->approchRightCard();
 }
 
 void KeyCardsActuator::approchLeftCard()
@@ -25,9 +25,28 @@ void KeyCardsActuator::approchLeftCard()
 
 void KeyCardsActuator::approchRightCard()
 {
-    qDebug()<<"SENDING RIGHT CARD";
-    m_serial->write("2\r\n");
+    if(!m_serial->isOpen()){
+        qDebug() << "Serial port is not open!";
+
+    }else {
+        qDebug() << "Serial port is open!";
+
+    }
+    qDebug()<<"Should send 2 on serial";
+    m_serial->write("\n");
+    qint64 written=m_serial->write(QByteArray{"2\r\n"});
+
+
+    qDebug()<<"Bytes written: "<<written;
     m_serial->flush();
+    qDebug()<<"ERROR:"<<m_serial->errorString();
+    emit allCardMoveFinished();
+}
+
+void KeyCardsActuator::moveCorrectCard()
+{
+    qDebug()<<"Should move correct card";
+    this->approchRightCard();
 }
 
 int KeyCardsActuator::leftCardStatus() const
@@ -58,21 +77,29 @@ void KeyCardsActuator::setRightCardStatus(int rightCardStatus)
     emit rightCardStatusChanged(m_rightCardStatus);
 }
 
+void KeyCardsActuator::printRightCardStatusWhenChanged()
+{
+    qDebug()<<"Right card value: "<<m_rightCardStatus;
+}
+
 void KeyCardsActuator::handleReadyRead()
 {
     auto readData = m_serial->readLine();
 
     QString data = readData.simplified();
 
+    qDebug()<<"I AM READING SERIAL";
     if(data == "left home")
         setLeftCardStatus(1);
 
     if(data == "left approached")
         setLeftCardStatus(2);
 
-    if(data == "right home")
-        setRightCardStatus(1);
-
+    if(data == "right home"){
+        setRightCardStatus(1); //emit signal
+        emit allCardMoveFinished();
+        qDebug()<<"Right is home!";
+    }
     if(data == "right approached")
         setRightCardStatus(2);
 

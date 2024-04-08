@@ -1,6 +1,7 @@
 #include "keycardsactuator.h"
 
 #include <QDebug>
+#include <QTimer>
 
 KeyCardsActuator::KeyCardsActuator(QSerialPort *serial, QObject *parent)
     : QObject(parent)
@@ -9,22 +10,14 @@ KeyCardsActuator::KeyCardsActuator(QSerialPort *serial, QObject *parent)
     connect(m_serial, &QSerialPort::readyRead, this, &KeyCardsActuator::handleReadyRead);
 }
 
-// KeyCardsActuator::KeyCardsActuator(QSerialPort *serial)
-// {
-//     m_serial=serial;
-//     connect(m_serial,&QSerialPort::readyRead,this,&KeyCardsActuator::handleReadyRead);
-//     connect(this, &KeyCardsActuator::rightCardStatusChanged, this, &KeyCardsActuator::printRightCardStatusWhenChanged);
-//     //this->approchRightCard();
-// }
-
 void KeyCardsActuator::approchLeftCard()
 {
 
-     m_serial->write(QByteArray{"\n"});
+    m_serial->write(QByteArray{"\n"});
 
     m_serial->write(QByteArray{"1\r\n"});
     m_serial->flush();
-
+    QTimer::singleShot(1000, this, [=](){m_isLeftmoving = true;});
 }
 
 void KeyCardsActuator::approchRightCard()
@@ -32,6 +25,7 @@ void KeyCardsActuator::approchRightCard()
     m_serial->write("\n");
     m_serial->write(QByteArray{"2\r\n"});
     m_serial->flush();
+    QTimer::singleShot(1000, this, [=](){m_isRightmoving = true;});
 }
 
 void KeyCardsActuator::moveCorrectCard()
@@ -79,27 +73,31 @@ void KeyCardsActuator::handleReadyRead()
 
     QString data = readData.simplified();
 
-    qDebug()<<"I AM READING SERIAL";
-    // if(data == "left home"){
-    //     setLeftCardStatus(1);
-    //     m_isLeftmoving = true;
-    //     if(m_isLeftmoving)
-    //     {
-    //         m_isLeftmoving = false;
-    //         emit leftCardFinishedMoving();
-    //         qDebug()<<"Signal emitted!";
-    //     }
-    // }
+    qDebug()<<"READING SERIAL!";
 
-    // if(data == "left approached")
-    //     setLeftCardStatus(2);
+    if(data == "left home"){
+        setLeftCardStatus(1);
+        qDebug()<<"I am getting left home!";
+        if(m_isLeftmoving)
+        {
+            m_isLeftmoving = false;
+            qDebug()<<"Should emit signal!";
+            emit leftCardFinishedMoving();
+        }
 
-    // if(data == "right home"){
-    //     setRightCardStatus(1); //emit signal
-    //     emit allCardMoveFinished();
-    //     qDebug()<<"Right is home!";
-    // }
-    // if(data == "right approached")
-    //     setRightCardStatus(2);
+    }
+
+    if(data == "left approached")
+        setLeftCardStatus(2);
+
+    if(data == "right home"){
+        setRightCardStatus(1); //emit signal
+        if(m_isRightmoving){
+        emit rightCardFinishedMoving();
+        qDebug()<<"Right is home!";
+        }
+    }
+    if(data == "right approached")
+        setRightCardStatus(2);
 
 }

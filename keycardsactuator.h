@@ -42,11 +42,17 @@ private slots:
     void handleReadyRead();
 
 private:
+    QString getCommand(QString &inputData);
+
+
     int m_leftCardStatus{0};
     int m_rightCardStatus{0};
     bool m_isLeftmoving{false};
     bool m_isRightmoving{false};
-
+    QString m_buffer{""};
+    bool m_isFullBuffer{false};
+    QString m_nextData{""};
+    QString m_data{""};
     QSerialPort *m_serial{nullptr};
 };
 

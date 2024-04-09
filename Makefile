@@ -49,16 +49,20 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = canbusrouter.cpp \
+SOURCES       = buttons.cpp \
+		canbusrouter.cpp \
 		canframecache.cpp \
 		keycardsactuator.cpp \
-		testbenchlibrary.cpp moc_canbusrouter.cpp \
+		testbenchlibrary.cpp moc_buttons.cpp \
+		moc_canbusrouter.cpp \
 		moc_canframecache.cpp \
 		moc_keycardsactuator.cpp
-OBJECTS       = canbusrouter.o \
+OBJECTS       = buttons.o \
+		canbusrouter.o \
 		canframecache.o \
 		keycardsactuator.o \
 		testbenchlibrary.o \
+		moc_buttons.o \
 		moc_canbusrouter.o \
 		moc_canframecache.o \
 		moc_keycardsactuator.o
@@ -198,10 +202,12 @@ DIST          = ../qt-raspi/mkspecs/features/spec_pre.prf \
 		../qt-raspi/mkspecs/features/exceptions.prf \
 		../qt-raspi/mkspecs/features/yacc.prf \
 		../qt-raspi/mkspecs/features/lex.prf \
-		testBenchLibrary.pro canbusrouter.h \
+		testBenchLibrary.pro buttons.h \
+		canbusrouter.h \
 		canframecache.h \
 		keycardsactuator.h \
-		testbenchlibrary.h canbusrouter.cpp \
+		testbenchlibrary.h buttons.cpp \
+		canbusrouter.cpp \
 		canframecache.cpp \
 		keycardsactuator.cpp \
 		testbenchlibrary.cpp
@@ -518,8 +524,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../qt-raspi/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents canbusrouter.h canframecache.h keycardsactuator.h testbenchlibrary.h $(DISTDIR)/
-	$(COPY_FILE) --parents canbusrouter.cpp canframecache.cpp keycardsactuator.cpp testbenchlibrary.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents buttons.h canbusrouter.h canframecache.h keycardsactuator.h testbenchlibrary.h $(DISTDIR)/
+	$(COPY_FILE) --parents buttons.cpp canbusrouter.cpp canframecache.cpp keycardsactuator.cpp testbenchlibrary.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -551,9 +557,119 @@ compiler_moc_predefs_clean:
 moc_predefs.h: ../qt-raspi/mkspecs/features/data/dummy.cpp
 	aarch64-linux-gnu-g++ -pipe -pipe -march=armv8-a --sysroot=/home/jakob/rpi-sysroot -g -fPIC -std=gnu++1z -Wall -Wextra -dM -E -o moc_predefs.h ../qt-raspi/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_canbusrouter.cpp moc_canframecache.cpp moc_keycardsactuator.cpp
+compiler_moc_header_make_all: moc_buttons.cpp moc_canbusrouter.cpp moc_canframecache.cpp moc_keycardsactuator.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_canbusrouter.cpp moc_canframecache.cpp moc_keycardsactuator.cpp
+	-$(DEL_FILE) moc_buttons.cpp moc_canbusrouter.cpp moc_canframecache.cpp moc_keycardsactuator.cpp
+moc_buttons.cpp: buttons.h \
+		../qt-raspi/include/QtCore/QObject \
+		../qt-raspi/include/QtCore/qobject.h \
+		../qt-raspi/include/QtCore/qobjectdefs.h \
+		../qt-raspi/include/QtCore/qnamespace.h \
+		../qt-raspi/include/QtCore/qglobal.h \
+		../qt-raspi/include/QtCore/qtversionchecks.h \
+		../qt-raspi/include/QtCore/qconfig.h \
+		../qt-raspi/include/QtCore/qtcore-config.h \
+		../qt-raspi/include/QtCore/qtconfigmacros.h \
+		../qt-raspi/include/QtCore/qtcoreexports.h \
+		../qt-raspi/include/QtCore/qtpreprocessorsupport.h \
+		../qt-raspi/include/QtCore/qtnoop.h \
+		../qt-raspi/include/QtCore/qsystemdetection.h \
+		../qt-raspi/include/QtCore/qprocessordetection.h \
+		../qt-raspi/include/QtCore/qcompilerdetection.h \
+		../qt-raspi/include/QtCore/qassert.h \
+		../qt-raspi/include/QtCore/qtypes.h \
+		../qt-raspi/include/QtCore/qtclasshelpermacros.h \
+		../qt-raspi/include/QtCore/qtversion.h \
+		../qt-raspi/include/QtCore/qtypeinfo.h \
+		../qt-raspi/include/QtCore/qcontainerfwd.h \
+		../qt-raspi/include/QtCore/qsysinfo.h \
+		../qt-raspi/include/QtCore/qlogging.h \
+		../qt-raspi/include/QtCore/qflags.h \
+		../qt-raspi/include/QtCore/qcompare_impl.h \
+		../qt-raspi/include/QtCore/qatomic.h \
+		../qt-raspi/include/QtCore/qbasicatomic.h \
+		../qt-raspi/include/QtCore/qatomic_cxx11.h \
+		../qt-raspi/include/QtCore/qgenericatomic.h \
+		../qt-raspi/include/QtCore/qconstructormacros.h \
+		../qt-raspi/include/QtCore/qdarwinhelpers.h \
+		../qt-raspi/include/QtCore/qexceptionhandling.h \
+		../qt-raspi/include/QtCore/qforeach.h \
+		../qt-raspi/include/QtCore/qtdeprecationmarkers.h \
+		../qt-raspi/include/QtCore/qttypetraits.h \
+		../qt-raspi/include/QtCore/qfunctionpointer.h \
+		../qt-raspi/include/QtCore/qglobalstatic.h \
+		../qt-raspi/include/QtCore/qmalloc.h \
+		../qt-raspi/include/QtCore/qminmax.h \
+		../qt-raspi/include/QtCore/qnumeric.h \
+		../qt-raspi/include/QtCore/qoverload.h \
+		../qt-raspi/include/QtCore/qswap.h \
+		../qt-raspi/include/QtCore/qtenvironmentvariables.h \
+		../qt-raspi/include/QtCore/qtresource.h \
+		../qt-raspi/include/QtCore/qttranslation.h \
+		../qt-raspi/include/QtCore/qversiontagging.h \
+		../qt-raspi/include/QtCore/qtmetamacros.h \
+		../qt-raspi/include/QtCore/qobjectdefs_impl.h \
+		../qt-raspi/include/QtCore/qstring.h \
+		../qt-raspi/include/QtCore/qchar.h \
+		../qt-raspi/include/QtCore/qstringview.h \
+		../qt-raspi/include/QtCore/qbytearray.h \
+		../qt-raspi/include/QtCore/qrefcount.h \
+		../qt-raspi/include/QtCore/qarraydata.h \
+		../qt-raspi/include/QtCore/qpair.h \
+		../qt-raspi/include/QtCore/qarraydatapointer.h \
+		../qt-raspi/include/QtCore/qarraydataops.h \
+		../qt-raspi/include/QtCore/qcontainertools_impl.h \
+		../qt-raspi/include/QtCore/qxptype_traits.h \
+		../qt-raspi/include/QtCore/qbytearrayalgorithms.h \
+		../qt-raspi/include/QtCore/qbytearrayview.h \
+		../qt-raspi/include/QtCore/qstringfwd.h \
+		../qt-raspi/include/QtCore/q20type_traits.h \
+		../qt-raspi/include/QtCore/qstringliteral.h \
+		../qt-raspi/include/QtCore/qstringalgorithms.h \
+		../qt-raspi/include/QtCore/qanystringview.h \
+		../qt-raspi/include/QtCore/qutf8stringview.h \
+		../qt-raspi/include/QtCore/qstringtokenizer.h \
+		../qt-raspi/include/QtCore/qstringbuilder.h \
+		../qt-raspi/include/QtCore/qlist.h \
+		../qt-raspi/include/QtCore/qhashfunctions.h \
+		../qt-raspi/include/QtCore/qiterator.h \
+		../qt-raspi/include/QtCore/qbytearraylist.h \
+		../qt-raspi/include/QtCore/qstringlist.h \
+		../qt-raspi/include/QtCore/qalgorithms.h \
+		../qt-raspi/include/QtCore/qstringmatcher.h \
+		../qt-raspi/include/QtCore/qcoreevent.h \
+		../qt-raspi/include/QtCore/qscopedpointer.h \
+		../qt-raspi/include/QtCore/qmetatype.h \
+		../qt-raspi/include/QtCore/qcompare.h \
+		../qt-raspi/include/QtCore/qdatastream.h \
+		../qt-raspi/include/QtCore/qiodevicebase.h \
+		../qt-raspi/include/QtCore/qfloat16.h \
+		../qt-raspi/include/QtCore/qmath.h \
+		../qt-raspi/include/QtCore/qiterable.h \
+		../qt-raspi/include/QtCore/qmetacontainer.h \
+		../qt-raspi/include/QtCore/qcontainerinfo.h \
+		../qt-raspi/include/QtCore/qtaggedpointer.h \
+		../qt-raspi/include/QtCore/qscopeguard.h \
+		../qt-raspi/include/QtCore/qobject_impl.h \
+		../qt-raspi/include/QtCore/qbindingstorage.h \
+		../qt-raspi/include/QtCore/QDebug \
+		../qt-raspi/include/QtCore/qdebug.h \
+		../qt-raspi/include/QtCore/qtextstream.h \
+		../qt-raspi/include/QtCore/qstringconverter_base.h \
+		../qt-raspi/include/QtCore/qcontiguouscache.h \
+		../qt-raspi/include/QtCore/qsharedpointer.h \
+		../qt-raspi/include/QtCore/qshareddata.h \
+		../qt-raspi/include/QtCore/qsharedpointer_impl.h \
+		../qt-raspi/include/QtCore/qmap.h \
+		../qt-raspi/include/QtCore/qshareddata_impl.h \
+		../qt-raspi/include/QtCore/qset.h \
+		../qt-raspi/include/QtCore/qhash.h \
+		../qt-raspi/include/QtCore/qvarlengtharray.h \
+		../qt-raspi/include/QtCore/q20memory.h \
+		moc_predefs.h \
+		../qt-host/libexec/moc
+	/home/jakob/qt-host/libexec/moc $(DEFINES) --include /home/jakob/testBenchLibrary/moc_predefs.h -I/home/jakob/qt-raspi/mkspecs/devices/linux-rasp-pi4-aarch64 -I/home/jakob/testBenchLibrary -I/home/jakob/qt-raspi/include -I/home/jakob/qt-raspi/include/QtSerialBus -I/home/jakob/qt-raspi/include/QtSerialPort -I/home/jakob/qt-raspi/include/QtNetwork -I/home/jakob/qt-raspi/include/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include buttons.h -o moc_buttons.cpp
+
 moc_canbusrouter.cpp: canbusrouter.h \
 		../qt-raspi/include/QtSerialBus/QCanBusDevice \
 		../qt-raspi/include/QtSerialBus/qcanbusdevice.h \
@@ -912,6 +1028,114 @@ compiler_lex_clean:
 compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean 
 
 ####### Compile
+
+buttons.o: buttons.cpp buttons.h \
+		../qt-raspi/include/QtCore/QObject \
+		../qt-raspi/include/QtCore/qobject.h \
+		../qt-raspi/include/QtCore/qobjectdefs.h \
+		../qt-raspi/include/QtCore/qnamespace.h \
+		../qt-raspi/include/QtCore/qglobal.h \
+		../qt-raspi/include/QtCore/qtversionchecks.h \
+		../qt-raspi/include/QtCore/qconfig.h \
+		../qt-raspi/include/QtCore/qtcore-config.h \
+		../qt-raspi/include/QtCore/qtconfigmacros.h \
+		../qt-raspi/include/QtCore/qtcoreexports.h \
+		../qt-raspi/include/QtCore/qtpreprocessorsupport.h \
+		../qt-raspi/include/QtCore/qtnoop.h \
+		../qt-raspi/include/QtCore/qsystemdetection.h \
+		../qt-raspi/include/QtCore/qprocessordetection.h \
+		../qt-raspi/include/QtCore/qcompilerdetection.h \
+		../qt-raspi/include/QtCore/qassert.h \
+		../qt-raspi/include/QtCore/qtypes.h \
+		../qt-raspi/include/QtCore/qtclasshelpermacros.h \
+		../qt-raspi/include/QtCore/qtversion.h \
+		../qt-raspi/include/QtCore/qtypeinfo.h \
+		../qt-raspi/include/QtCore/qcontainerfwd.h \
+		../qt-raspi/include/QtCore/qsysinfo.h \
+		../qt-raspi/include/QtCore/qlogging.h \
+		../qt-raspi/include/QtCore/qflags.h \
+		../qt-raspi/include/QtCore/qcompare_impl.h \
+		../qt-raspi/include/QtCore/qatomic.h \
+		../qt-raspi/include/QtCore/qbasicatomic.h \
+		../qt-raspi/include/QtCore/qatomic_cxx11.h \
+		../qt-raspi/include/QtCore/qgenericatomic.h \
+		../qt-raspi/include/QtCore/qconstructormacros.h \
+		../qt-raspi/include/QtCore/qdarwinhelpers.h \
+		../qt-raspi/include/QtCore/qexceptionhandling.h \
+		../qt-raspi/include/QtCore/qforeach.h \
+		../qt-raspi/include/QtCore/qtdeprecationmarkers.h \
+		../qt-raspi/include/QtCore/qttypetraits.h \
+		../qt-raspi/include/QtCore/qfunctionpointer.h \
+		../qt-raspi/include/QtCore/qglobalstatic.h \
+		../qt-raspi/include/QtCore/qmalloc.h \
+		../qt-raspi/include/QtCore/qminmax.h \
+		../qt-raspi/include/QtCore/qnumeric.h \
+		../qt-raspi/include/QtCore/qoverload.h \
+		../qt-raspi/include/QtCore/qswap.h \
+		../qt-raspi/include/QtCore/qtenvironmentvariables.h \
+		../qt-raspi/include/QtCore/qtresource.h \
+		../qt-raspi/include/QtCore/qttranslation.h \
+		../qt-raspi/include/QtCore/qversiontagging.h \
+		../qt-raspi/include/QtCore/qtmetamacros.h \
+		../qt-raspi/include/QtCore/qobjectdefs_impl.h \
+		../qt-raspi/include/QtCore/qstring.h \
+		../qt-raspi/include/QtCore/qchar.h \
+		../qt-raspi/include/QtCore/qstringview.h \
+		../qt-raspi/include/QtCore/qbytearray.h \
+		../qt-raspi/include/QtCore/qrefcount.h \
+		../qt-raspi/include/QtCore/qarraydata.h \
+		../qt-raspi/include/QtCore/qpair.h \
+		../qt-raspi/include/QtCore/qarraydatapointer.h \
+		../qt-raspi/include/QtCore/qarraydataops.h \
+		../qt-raspi/include/QtCore/qcontainertools_impl.h \
+		../qt-raspi/include/QtCore/qxptype_traits.h \
+		../qt-raspi/include/QtCore/qbytearrayalgorithms.h \
+		../qt-raspi/include/QtCore/qbytearrayview.h \
+		../qt-raspi/include/QtCore/qstringfwd.h \
+		../qt-raspi/include/QtCore/q20type_traits.h \
+		../qt-raspi/include/QtCore/qstringliteral.h \
+		../qt-raspi/include/QtCore/qstringalgorithms.h \
+		../qt-raspi/include/QtCore/qanystringview.h \
+		../qt-raspi/include/QtCore/qutf8stringview.h \
+		../qt-raspi/include/QtCore/qstringtokenizer.h \
+		../qt-raspi/include/QtCore/qstringbuilder.h \
+		../qt-raspi/include/QtCore/qlist.h \
+		../qt-raspi/include/QtCore/qhashfunctions.h \
+		../qt-raspi/include/QtCore/qiterator.h \
+		../qt-raspi/include/QtCore/qbytearraylist.h \
+		../qt-raspi/include/QtCore/qstringlist.h \
+		../qt-raspi/include/QtCore/qalgorithms.h \
+		../qt-raspi/include/QtCore/qstringmatcher.h \
+		../qt-raspi/include/QtCore/qcoreevent.h \
+		../qt-raspi/include/QtCore/qscopedpointer.h \
+		../qt-raspi/include/QtCore/qmetatype.h \
+		../qt-raspi/include/QtCore/qcompare.h \
+		../qt-raspi/include/QtCore/qdatastream.h \
+		../qt-raspi/include/QtCore/qiodevicebase.h \
+		../qt-raspi/include/QtCore/qfloat16.h \
+		../qt-raspi/include/QtCore/qmath.h \
+		../qt-raspi/include/QtCore/qiterable.h \
+		../qt-raspi/include/QtCore/qmetacontainer.h \
+		../qt-raspi/include/QtCore/qcontainerinfo.h \
+		../qt-raspi/include/QtCore/qtaggedpointer.h \
+		../qt-raspi/include/QtCore/qscopeguard.h \
+		../qt-raspi/include/QtCore/qobject_impl.h \
+		../qt-raspi/include/QtCore/qbindingstorage.h \
+		../qt-raspi/include/QtCore/QDebug \
+		../qt-raspi/include/QtCore/qdebug.h \
+		../qt-raspi/include/QtCore/qtextstream.h \
+		../qt-raspi/include/QtCore/qstringconverter_base.h \
+		../qt-raspi/include/QtCore/qcontiguouscache.h \
+		../qt-raspi/include/QtCore/qsharedpointer.h \
+		../qt-raspi/include/QtCore/qshareddata.h \
+		../qt-raspi/include/QtCore/qsharedpointer_impl.h \
+		../qt-raspi/include/QtCore/qmap.h \
+		../qt-raspi/include/QtCore/qshareddata_impl.h \
+		../qt-raspi/include/QtCore/qset.h \
+		../qt-raspi/include/QtCore/qhash.h \
+		../qt-raspi/include/QtCore/qvarlengtharray.h \
+		../qt-raspi/include/QtCore/q20memory.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o buttons.o buttons.cpp
 
 canbusrouter.o: canbusrouter.cpp ../qt-raspi/include/QtSerialBus/QCanBus \
 		../qt-raspi/include/QtSerialBus/qcanbus.h \
@@ -1379,6 +1603,9 @@ testbenchlibrary.o: testbenchlibrary.cpp testbenchlibrary.h \
 		../qt-raspi/include/QtCore/qvarlengtharray.h \
 		../qt-raspi/include/QtCore/q20memory.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o testbenchlibrary.o testbenchlibrary.cpp
+
+moc_buttons.o: moc_buttons.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_buttons.o moc_buttons.cpp
 
 moc_canbusrouter.o: moc_canbusrouter.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_canbusrouter.o moc_canbusrouter.cpp

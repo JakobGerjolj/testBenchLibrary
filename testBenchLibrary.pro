@@ -11,14 +11,12 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    canbusrouter.cpp \
-    canframecache.cpp \
+    buttons.cpp \
     keycardsactuator.cpp \
     testbenchlibrary.cpp
 
 HEADERS += \
-    canbusrouter.h \
-    canframecache.h \
+    buttons.h \
     keycardsactuator.h \
     testbenchlibrary.h
 
@@ -32,3 +30,8 @@ HEADERS += \
 INSTALLS += target
 
 
+
+unix:!macx: LIBS += -L$$PWD/../rpi-sysroot/usr/lib/ -lwiringPi
+
+INCLUDEPATH += $$PWD/../rpi-sysroot/usr/include
+DEPENDPATH += $$PWD/../rpi-sysroot/usr/include

@@ -92,6 +92,7 @@ void KeyCardsActuator::handleReadyRead()
 
     if(m_data.contains(rightCode)){
         setRightCardStatus(1);
+        qDebug()<<"Emitted right!";
         emit rightCardFinishedMoving();
         m_data="";
 

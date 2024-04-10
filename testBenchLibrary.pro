@@ -12,11 +12,13 @@ CONFIG += c++17
 
 SOURCES += \
     buttons.cpp \
+    camera.cpp \
     keycardsactuator.cpp \
     testbenchlibrary.cpp
 
 HEADERS += \
     buttons.h \
+    camera.h \
     keycardsactuator.h \
     testbenchlibrary.h
 

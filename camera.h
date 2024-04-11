@@ -9,7 +9,7 @@
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonObject>
-enum Result{
+enum light{
     leftLEVER,
     rightLEVER,
     syncBUTTON,
@@ -23,15 +23,15 @@ class Camera : public QObject
 public:
     explicit Camera(QObject *parent = nullptr);
     void takePicture();
-    void processData();
-    bool getStatus(Result);
+    bool getStatus(light light);
 
 
 signals:
     void pictureTaken();
 
 private:
-
+    void processData();
+    void parseData(QByteArray);
     QMap<QString, bool> m_resultOfLights;
     QString m_command{"python"};
     QProcess* m_takePictureProcess{nullptr};

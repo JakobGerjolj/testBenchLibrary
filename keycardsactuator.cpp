@@ -24,7 +24,6 @@ void KeyCardsActuator::approchLeftCard()
 void KeyCardsActuator::approchRightCard()
 {
 
-    qDebug()<<"Sending right card!";
     m_serial->write(QByteArray{"\n"});
     m_serial->write(QByteArray{"2\r\n"});
     m_serial->flush();
@@ -33,7 +32,6 @@ void KeyCardsActuator::approchRightCard()
 
 void KeyCardsActuator::moveCorrectCard()
 {
-    qDebug()<<"Should move correct card";
     this->approchRightCard();
 }
 
@@ -67,7 +65,6 @@ void KeyCardsActuator::setRightCardStatus(int rightCardStatus)
 
 void KeyCardsActuator::printRightCardStatusWhenChanged()
 {
-    qDebug()<<"Right card value: "<<m_rightCardStatus;
 }
 
 void KeyCardsActuator::handleReadyRead()
@@ -75,7 +72,6 @@ void KeyCardsActuator::handleReadyRead()
 
     QByteArray readData = m_serial->readAll();
     QString temp=QString::fromUtf8(readData);
-    qDebug()<<"Data from serial: "<<temp;
     m_data.append(temp);
 
 
@@ -101,7 +97,7 @@ void KeyCardsActuator::handleReadyRead()
 
     m_isFullBuffer=false;
     m_buffer="";
-    qDebug()<<"Full string: "<<m_data<<"---------------------------";
+
 
 
 
@@ -126,8 +122,6 @@ QString KeyCardsActuator::getCommand(QString &inputData)
             int firstDelimiter=inputData.indexOf('>');
             QString comand=inputData.mid(0,firstDelimiter);
             if(inputData.size()==firstDelimiter+1){
-
-
             }
         }
     }

@@ -22,13 +22,12 @@ void Camera::takePicture()
 
     qDebug()<<"Trying to take photo!";
     m_takePictureProcess->start(m_command, QStringList{"/home/bench/python_scripts_for_bench/pictureTaker.py"});
+    //change to class based python scripts
 
 
     connect(m_takePictureProcess, &QProcess::finished, [&](){
-        qDebug()<<"Process finished!";
         emit pictureTaken();
-        qDebug()<<"Here is output of it: "<<m_takePictureProcess->readAllStandardOutput();
-
+        processData();
 
     });
 
@@ -57,8 +56,12 @@ void Camera::processData()
     }
     QByteArray jsonData = jsonFile.readAll();
     jsonFile.close();
+    parseData(jsonData);
 
+}
 
+void Camera::parseData(QByteArray jsonData)
+{
 
     if(jsonData[1]=='0'){
         m_resultOfLights["leftLever"]=false;
@@ -66,51 +69,46 @@ void Camera::processData()
         m_resultOfLights["leftLever"]=true;
     }
 
-    if(jsonData[3]=='0'){
+    if(jsonData[4]=='0'){
         m_resultOfLights["rightLever"]=false;
     }else{
         m_resultOfLights["rightLever"]=true;
     }
 
-    if(jsonData[5]=='0'){
+    if(jsonData[7]=='0'){
         m_resultOfLights["syncButton"]=false;
     }else{
         m_resultOfLights["syncButton"]=true;
     }
 
-    if(jsonData[7]=='0'){
-        m_resultOfLights["stationButton"]=true;
-    }else{
+    if(jsonData[10]=='0'){
         m_resultOfLights["stationButton"]=false;
-    }
-
-    if(jsonData[9]=='0'){
-        m_resultOfLights["dockButton"]=true;
     }else{
-        m_resultOfLights["dockButton"]=false;
+        m_resultOfLights["stationButton"]=true;
     }
 
-    qDebug()<<"Left lever"<<m_resultOfLights["leftLever"];
-
-
-
+    if(jsonData[13]=='0'){
+        m_resultOfLights["dockButton"]=false;
+    }else{
+        m_resultOfLights["dockButton"]=true;
+    }
 }
 
-bool Camera::getStatus(Result result)
+bool Camera::getStatus(light light)
 {
-    if(result==leftLEVER){
+    if(light==leftLEVER){
         return m_resultOfLights["leftLever"];
     }
-    if(result==rightLEVER){
+    if(light==rightLEVER){
         return m_resultOfLights["rightLever"];
     }
-    if(result==syncBUTTON){
+    if(light==syncBUTTON){
         return m_resultOfLights["syncButton"];
     }
-    if(result==stationBUTTON){
+    if(light==stationBUTTON){
         return m_resultOfLights["stationButton"];
     }
-    if(result==dockBUTTON){
+    if(light==dockBUTTON){
         return m_resultOfLights["dockButton"];
     }
     return false;

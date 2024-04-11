@@ -14,12 +14,14 @@ SOURCES += \
     buttons.cpp \
     camera.cpp \
     keycardsactuator.cpp \
+    leversactuator.cpp \
     testbenchlibrary.cpp
 
 HEADERS += \
     buttons.h \
     camera.h \
     keycardsactuator.h \
+    leversactuator.h \
     testbenchlibrary.h
 
 

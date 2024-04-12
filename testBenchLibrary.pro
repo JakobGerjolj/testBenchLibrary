@@ -1,6 +1,7 @@
 QT -= gui
 QT += serialport
 QT += serialbus
+QT += testlib
 TEMPLATE = lib
 CONFIG += staticlib
 

@@ -5,6 +5,7 @@
 #include <QObject>
 
 #include <QSerialPort>
+#include <QSignalSpy>
 
 class LeversActuator : public QObject
 {
@@ -38,7 +39,6 @@ public:
 
     int leftPosition() const;
     int rightPosition() const;
-
 
 
 

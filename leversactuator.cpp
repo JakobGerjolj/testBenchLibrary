@@ -111,8 +111,6 @@ int LeversActuator::rightPosition() const
     return m_rightPosition;
 }
 
-
-
 void LeversActuator::setLeftPosition(int leftPosition)
 {
     if (m_leftPosition == leftPosition)

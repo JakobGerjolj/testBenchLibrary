@@ -6,6 +6,7 @@
 
 #include <QSerialPort>
 #include <QSignalSpy>
+#include <QTimer>
 
 class LeversActuator : public QObject
 {
@@ -36,6 +37,7 @@ public:
     Q_INVOKABLE void moveTest();
     Q_INVOKABLE void startMoving();
     Q_INVOKABLE void stopMoving();
+    // Q_INVOKABLE void moveBothSlowlyHome();
 
     int leftPosition() const;
     int rightPosition() const;
@@ -56,6 +58,7 @@ signals:
     void rightHome();
     void moved();
     void bothMoved();
+    // void slowerMovementFinished();
 
 
 private slots:
@@ -72,6 +75,8 @@ private:
 
     int m_leftPosition{0};
     int m_rightPosition{0};
+
+    QTimer timer;
 
 };
 

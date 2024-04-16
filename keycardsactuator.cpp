@@ -80,17 +80,21 @@ void KeyCardsActuator::handleReadyRead()
     QByteArray rightCode="right home";
     if(m_data.contains(leftCode)){
         setLeftCardStatus(1);
-        emit leftCardFinishedMoving();
-        m_data="";
-
+        if(m_isLeftmoving){
+            qDebug()<<"Emitted left!";
+            emit leftCardFinishedMoving();
+            m_data="";
+        }
 
     }
 
     if(m_data.contains(rightCode)){
         setRightCardStatus(1);
-        qDebug()<<"Emitted right!";
-        emit rightCardFinishedMoving();
-        m_data="";
+        if(m_isRightmoving){
+            qDebug()<<"Emitted right!";
+            emit rightCardFinishedMoving();
+            m_data="";
+        }
 
     }
 

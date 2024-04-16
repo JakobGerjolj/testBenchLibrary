@@ -58,7 +58,7 @@ void LeversActuator::move(LeversActuator::Lever lever, LeversActuator::Direction
 
     auto command = QString("<move, %1, %2, %3>\r\n").arg(leverInt).arg(dirInt).arg(steps);
     //    auto command = QString("<move, %1, 2, %3>\r\n").arg(leverInt).arg(steps);
-
+    m_serial->write(QByteArray{"\n"});
     m_serial->write(command.toUtf8());
     m_serial->flush();
 }
@@ -101,6 +101,29 @@ void LeversActuator::stopMoving()
     m_serial->flush();
 }
 
+// void LeversActuator::moveBothSlowlyHome()
+// {
+//     timer.setInterval(100);
+//     int timerCounter=1;
+
+//     connect(&timer, &QTimer::timeout, [&]() {
+//         // This code will run every time the timer times out (every 1 second)
+//         qDebug() << "Timer triggered";
+//         timerCounter++;
+//         // Add your loop logic here
+
+//         // Stop the timer if certain conditions are met
+//         if (timerCounter==20) {
+//             timer.stop();
+//             emit slowerMovementFinished();
+//             // emit bot
+//         }
+//     });
+
+//     timer.start();
+
+// }
+
 int LeversActuator::leftPosition() const
 {
     return m_leftPosition;
@@ -135,7 +158,7 @@ void LeversActuator::handleReadyRead()
 {
     auto readData = m_serial->readAll();
     m_data.append(readData);
-    qDebug() << readData;
+    qDebug()<<"FULL STRING: "<<m_data;
     if(m_data.contains("<home>")){
         emit bothHome();
         qDebug()<<"got <home> signal!";
@@ -163,7 +186,7 @@ void LeversActuator::handleReadyRead()
     }
 
 
-    qDebug()<<"FULL STRING: "<<m_data;
+
 
     //    if(m_isInit)
     //    {

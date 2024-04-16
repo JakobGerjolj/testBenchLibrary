@@ -5,15 +5,19 @@
 Buttons::Buttons(QObject *parent)
     : QObject{parent}
 {
-    wiringPiSetup();
+    //wiringPiSetup();
     pinMode(m_dockRele1, OUTPUT);
     pinMode(m_dockRele2, OUTPUT);
     pinMode(m_syncRele1, OUTPUT);
     pinMode(m_syncRele2, OUTPUT);
+    pinMode(m_stationRele1, OUTPUT);
+    pinMode(m_stationRele2, OUTPUT);
     digitalWrite(m_dockRele1, HIGH);
     digitalWrite(m_dockRele2, HIGH);
     digitalWrite(m_syncRele1, HIGH);
     digitalWrite(m_syncRele2, HIGH);
+    digitalWrite(m_stationRele1, HIGH);
+    digitalWrite(m_stationRele2, HIGH);
 
 }
 
@@ -38,7 +42,6 @@ void Buttons::pressDock()
     digitalWrite(m_dockRele1, HIGH);
     digitalWrite(m_dockRele2, LOW);
     QTimer::singleShot(1130, [=](){
-        emit pressed();
         releaseDock();
     });;
 
@@ -50,10 +53,10 @@ void Buttons::pressSync()
     //Sync_rele 2 - GPIO 6 - WPi pin 22
     digitalWrite(m_syncRele1, HIGH);
     digitalWrite(m_syncRele2, LOW);
-    QTimer::singleShot(1130, [=](){
-        emit pressed();
+    QTimer::singleShot(1200, [=](){
         releaseSync();
     });
+
 
 }
 
@@ -63,8 +66,7 @@ void Buttons::pressStation()
     //Station_rele 2 - GPIO 22 - Wpi pin 3
     digitalWrite(m_stationRele1, HIGH);
     digitalWrite(m_stationRele2, LOW);
-    QTimer::singleShot(1130, [=](){
-        emit pressed();
+    QTimer::singleShot(1200, [=](){
         releaseStation();
     });
 
@@ -74,6 +76,12 @@ void Buttons::releaseDock()
 {
     digitalWrite(m_dockRele1,LOW);
     digitalWrite(m_dockRele2,HIGH);
+    QTimer::singleShot(1200, [=](){
+        emit pressed();
+        digitalWrite(m_dockRele1,HIGH);
+        digitalWrite(m_dockRele2,HIGH);
+    });;
+
 
 }
 
@@ -81,6 +89,11 @@ void Buttons::releaseSync()
 {
     digitalWrite(m_syncRele1,LOW);
     digitalWrite(m_syncRele2,HIGH);
+    QTimer::singleShot(1200,[=](){
+        emit pressed();
+        digitalWrite(m_syncRele1,HIGH);
+        digitalWrite(m_syncRele2,HIGH);
+    });
 
 }
 
@@ -88,5 +101,10 @@ void Buttons::releaseStation()
 {
     digitalWrite(m_stationRele1, LOW);
     digitalWrite(m_stationRele2, HIGH);
+    QTimer::singleShot(1200, [=](){
+        emit pressed();
+        digitalWrite(m_stationRele1, HIGH);
+        digitalWrite(m_stationRele2, HIGH);
+    });
 
 }
